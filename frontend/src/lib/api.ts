@@ -2,9 +2,14 @@ const ADDRESS =
   process.env.NODE_ENV !== "development" ? "/api/" : "http://localhost:8989";
 
 export const getLeaderboard = async () => {
-  const response = await fetch(`${ADDRESS}/leaderboard`);
-  const jsonResult = await response.json();
-  return jsonResult.leaderboard;
+  try {
+    const response = await fetch(`${ADDRESS}/leaderboard`);
+    const jsonResult = await response.json();
+    return jsonResult.leaderboard;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 export const getName = async (name: string) => {
