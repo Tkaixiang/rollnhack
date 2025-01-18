@@ -84,17 +84,21 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
 
         // Update finals score and hours studied
         setFinalsScore(variation.close);
-        setHoursStudied(Math.min(24, Number((nextIndex / 2 + subStepIndex / 60).toFixed(2)))); // Faster scaling
+        setHoursStudied(
+          Math.min(24, Number((nextIndex / 2 + subStepIndex / 60).toFixed(2)))
+        ); // Faster scaling
 
         // Notify the parent of the latest value
-        if (subStepIndexRef.current === 29) { // Adjusted for faster candle transitions
+        if (subStepIndexRef.current === 29) {
+          // Adjusted for faster candle transitions
           onUpdateLatestValue(variation.close);
         }
 
         subStepIndexRef.current += 1;
 
         // Move to the next candle after 30 variations
-        if (subStepIndexRef.current >= 30) { // Reduced number of steps per candle
+        if (subStepIndexRef.current >= 30) {
+          // Reduced number of steps per candle
           currentIndexRef.current += 1;
           subStepIndexRef.current = 0;
         }
@@ -102,7 +106,7 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
         stopGraphUpdates(); // Stop updates when all data is shown
         if (onGraphEnd) onGraphEnd(); // Trigger the end round callback
       }
-    }, 25); // Reduced interval for faster updates
+    }, 10); // Reduced interval for faster updates
   };
 
   const stopGraphUpdates = () => {
@@ -113,7 +117,7 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
   const generateInitialData = () => {
     const data = [];
     const startTime = Math.floor(Date.now() / 1000); // Start from the current time
-    let value = 50; // Start with a base value
+    let value = 60; // Start with a midpoint value within the new range
 
     const totalCandles = 48; // 48 candles for 24 hours (30-minute intervals)
 
@@ -122,9 +126,18 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
 
       // High and low are now dependent on open and close values
       const open = value; // The open of the next candle is the close of the previous one
-      const close = Math.max(25, Math.min(75, open + (Math.random() - 0.5) * 10));
-      const high = Math.min(90, Math.max(open, close) + Math.random() * 0.1 * Math.abs(close - open));
-      const low = Math.max(25, Math.min(open, close) - Math.random() * 0.1 * Math.abs(close - open));
+      const close = Math.max(
+        40,
+        Math.min(92, open + (Math.random() - 0.5) * 10)
+      );
+      const high = Math.min(
+        92,
+        Math.max(open, close) + Math.random() * 0.1 * Math.abs(close - open)
+      );
+      const low = Math.max(
+        40,
+        Math.min(open, close) - Math.random() * 0.1 * Math.abs(close - open)
+      );
 
       data.push({
         time,
@@ -146,9 +159,9 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
     const variationFactor = smoothFactor * 1.5; // Scale the sine wave variation
     return {
       ...baseCandle,
-      high: Math.max(25, Math.min(90, baseCandle.high + variationFactor)),
-      low: Math.max(25, Math.min(90, baseCandle.low - variationFactor)),
-      close: Math.max(25, Math.min(90, baseCandle.close + variationFactor)),
+      high: Math.max(40, Math.min(92, baseCandle.high + variationFactor)),
+      low: Math.max(40, Math.min(92, baseCandle.low - variationFactor)),
+      close: Math.max(40, Math.min(92, baseCandle.close + variationFactor)),
     };
   };
 
@@ -163,8 +176,13 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
     <div className="w-full h-full relative">
       <div ref={chartContainerRef} className="w-full h-full z-0" />
       <div className="absolute top-4 left-4 bg-neutral-800 p-4 rounded shadow-lg text-white z-10">
-        <p className="text-lg font-bold">Finals Score: <span className="main-text"> {finalsScore.toFixed(2)} </span></p>
-        <p className="text-lg font-bold">Hours of Study: <span className="main-text"> {hoursStudied} </span></p>
+        <p className="text-lg font-bold">
+          Finals Score:{" "}
+          <span className="main-text"> {finalsScore.toFixed(2)} </span>
+        </p>
+        <p className="text-lg font-bold">
+          Hours of Study: <span className="main-text"> {hoursStudied} </span>
+        </p>
       </div>
     </div>
   );

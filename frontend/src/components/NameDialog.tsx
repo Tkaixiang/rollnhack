@@ -32,7 +32,7 @@ function NameDialog({ setOpen, open, setName, name }) {
       }}
     >
       <DialogTrigger asChild>
-        <Button>Choose Name</Button>
+        <Button>Settings</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -40,16 +40,23 @@ function NameDialog({ setOpen, open, setName, name }) {
         </DialogHeader>
         <div className="mb-4">
           <p className="text-neutral-600">
-          Balance your study hours wisely to excel in your modules. While studying more improves performance, overworking can lead to burnout—'CRASH OUT.' Strive for top grades by managing effort and rest effectively!
+            Balance your study hours wisely to excel in your modules. While
+            studying more improves performance, overworking can lead to
+            burnout—'CRASH OUT.' Strive for top grades by managing effort and
+            rest effectively!
           </p>
           <h3 className="text-lg font-semibold mt-3">Grading Table</h3>
           <ul className="text-neutral-600">
-            <li>A: 70 and above</li>
-            <li>A-: 60 to 69</li>
-            <li>B+: 50 to 59</li>
-            <li>B: 40 to 49</li>
-            <li>C: 30 to 39</li>
-            <li>F: Below 30</li>
+            <li>A+: 80 and above</li>
+            <li>A: 75 to 79</li>
+            <li>A-: 70 to 74</li>
+            <li>B+: 65 to 69</li>
+            <li>B: 60 to 64</li>
+            <li>B-: 55 to 59</li>
+            <li>C+: 50 to 54</li>
+            <li>C: 45 to 49</li>
+            <li>D+: 40 to 44</li>
+            <li>F: CRASHOUT</li>
           </ul>
         </div>
         <div className="flex flex-col">

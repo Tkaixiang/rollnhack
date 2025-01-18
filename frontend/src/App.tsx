@@ -26,6 +26,7 @@ const COURSES = [
 const MAX_ROUNDS = 5;
 const TROPHIES = ["🥇", "🥈", "🥉"];
 const GRADE_MAPPINGS = {
+  "A+": 5.0,
   A: 5.0,
   "A-": 4.5,
   "B+": 4.0,
@@ -33,7 +34,7 @@ const GRADE_MAPPINGS = {
   "B-": 3.0,
   "C+": 2.5,
   C: 2.0,
-  "C-": 1.5,
+  "D+": 1.5,
   D: 1.0,
   F: 0.0,
 };
@@ -87,6 +88,9 @@ function App() {
 
   const handleEndRound = () => {
     const finalResultsCopy = [...finalResults];
+    console.log(
+      "Received Graph Value " + finalResultsCopy
+    )
     const grade = calculateGrade(latestGraphValue); // Determine grade based on latest value
     finalResultsCopy[round - 1].grade = grade;
     setFinalResults(finalResultsCopy);
@@ -99,13 +103,19 @@ function App() {
   };
 
   const calculateGrade = (value) => {
-    if (value >= 70) return "A";
-    if (value >= 60) return "A-";
-    if (value >= 50) return "B+";
-    if (value >= 40) return "B";
-    if (value >= 30) return "C";
+    if (value >= 80) return "A+";
+    if (value >= 75) return "A";
+    if (value >= 70) return "A-";
+    if (value >= 65) return "B+";
+    if (value >= 60) return "B";
+    if (value >= 55) return "B-";
+    if (value >= 50) return "C+";
+    if (value >= 45) return "C";
+    if (value >= 40) return "D+";
+    if (value >= 35) return "D";
     return "F";
   };
+  
 
   const handleSubmitScore = async () => {
     const leaderboard = await postScore(name, finalGrade);
