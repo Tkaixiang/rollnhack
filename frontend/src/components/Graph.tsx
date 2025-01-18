@@ -1,17 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart } from 'lightweight-charts';
 
-const Graph = () => {
-  const chartContainerRef = useRef(null);
-  const chartRef = useRef(null);
-  const seriesRef = useRef(null);
+const Graph = ({ isPaused, onPause }) => {
+    const chartContainerRef = useRef(null);
+    const chartRef = useRef(null);
+    const seriesRef = useRef(null);
+    const intervalIdRef = useRef(null); // Keep track of interval ID
+    const latestValueRef = useRef(null); // Store the latest value
 
   useEffect(() => {
     // Initialize the chart
     const chart = createChart(chartContainerRef.current, {
-      width: chartContainerRef.current.clientWidth,
-      height: 400,
+      width: 700,
+      height: 680,
       layout: {
+        // background: '#3131314f',
         textColor: '#333',
       },
       grid: {
@@ -58,8 +61,34 @@ const Graph = () => {
     };
   }, []);
 
-  return <div ref={chartContainerRef} style={{ width: '100%', height: '400px' }} />;
-};
+  useEffect(() => {
+    if (isPaused) {
+      // If paused, stop updates and send the latest value to parent
+      stopGraphUpdates();
+      if (latestValueRef.current) onPause(latestValueRef.current.close);
+    } else {
+      // Resume updates if not paused
+      startGraphUpdates(seriesRef.current, seriesRef.current.data);
+    }
+  }, [isPaused]);
+
+  const startGraphUpdates = (series, initialData) => {
+    intervalIdRef.current = setInterval(() => {
+      const lastTime = initialData[initialData.length - 1]?.time || 0;
+      const newCandle = generateRandomCandle(lastTime + 1);
+      latestValueRef.current = newCandle; // Save the latest value
+      initialData.push(newCandle);
+      series.update(newCandle);
+
+      if (initialData.length > 24) initialData.shift(); // Keep max 24 candles
+    }, 500);
+  };
+
+  const stopGraphUpdates = () => {
+    clearInterval(intervalIdRef.current);
+  };
+
+
 
 // Generate initial random data for 24 time points
 const generateRandomData = (numPoints) => {
@@ -103,5 +132,8 @@ const generateRandomCandle = (time) => {
   
     return { time, open, high, low, close };
   };
+
+  return <div ref={chartContainerRef} style={{ width: '100%', height: '400px' }} />;
+};
 
 export default Graph;
