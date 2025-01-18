@@ -19,21 +19,14 @@ function NameDialog({ setOpen, open }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Student ID Name</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when youre done.
-          </DialogDescription>
+          <DialogTitle>Full Name (as per your student ID)</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
+            <Input id="name" className="col-span-3" />
           </div>
         </div>
         <DialogFooter>
@@ -43,7 +36,7 @@ function NameDialog({ setOpen, open }) {
               setOpen(false);
             }}
           >
-            ACADEMIC WEAPON!
+            Let's goooo!
           </Button>
         </DialogFooter>
       </DialogContent>
