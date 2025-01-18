@@ -120,7 +120,6 @@ function App() {
     setLeaderboard(leaderboard);
     setShowScoreDialog(false);
     initMatch();
-    setShowNameDialog(true);
     setName("");
     setStartLoadingGraph(false); // Stop the graph until the user inputs their name
   };
@@ -206,6 +205,11 @@ function App() {
                   <span className="mb-2">The dreaded finals approaches...</span>
                   <Button
                     onClick={() => {
+                      if (!name) {
+                        setShowNameDialog(true);
+                        return;
+                      }
+
                       startMatch();
                     }}
                   >
