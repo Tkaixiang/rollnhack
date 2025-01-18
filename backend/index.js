@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import { MongoClientInstance } from "./mongo.js";
-const PORT = 3000;
+const PORT = 8989;
 
 const fastify = Fastify();
 
