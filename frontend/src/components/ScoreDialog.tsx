@@ -15,6 +15,19 @@ const ANIME_LINKS = [
   "https://media1.tenor.com/m/w8bVOlSAZkUAAAAC/spy-x-family-anya-spy-x-family.gif",
 ];
 
+const GRADE_MESSAGES = {
+  A: "the bell curve god has blessed you with ",
+  "A-": "you almost achieved perfection, but settled for ",
+  "B+": "your mugger powers have earned you ",
+  B: "your countless coffee-fueled nights resulted in ",
+  "B-": "your study playlist barely carried you to ",
+  "C+": "surviving on maggie mee has led you to ",
+  C: "your questionable study methods somehow got you ",
+  "C-": "your last-minute cramming adventure ends with ",
+  D: "your Netflix breaks were too powerful, leaving you with ",
+  F: "you crashed out with ",
+};
+
 function ScoreDialog({ moduleInfo, handleNextRound, open, setOpen }) {
   return (
     <Dialog open={open}>
@@ -30,8 +43,8 @@ function ScoreDialog({ moduleInfo, handleNextRound, open, setOpen }) {
             src={ANIME_LINKS[Math.floor(Math.random() * ANIME_LINKS.length)]}
             className="my-4 w-64"
           />
-          <span>
-            The bell curve god has blessed you with{" "}
+          <span className="text-center">
+            {GRADE_MESSAGES[moduleInfo.grade] + " "}
             {moduleInfo.grade === "A" ? "an" : "a"}:
           </span>
           <span className="text-8xl font-bold main-text">
