@@ -60,4 +60,8 @@
   .main-text {
     @apply font-extrabold relative [text-shadow:_2px_2px_0_rgb(0_0_0),_4px_4px_0_rgb(71_85_105)] text-main;
   }
+
+  .secondary-text {
+    @apply font-bold relative [text-shadow:_2px_2px_0_rgb(0_0_0),_4px_4px_0_rgb(71_85_105)] text-cyan-500;
+  }
 }
