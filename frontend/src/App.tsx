@@ -5,8 +5,9 @@ import { Button } from "./components/ui/button";
 import RetroGrid from "./components/ui/retro-grid";
 import Graph from "./components/Graph";
 import { Separator } from "./components/ui/separator";
-import { getLeaderboard } from "./lib/api";
+import { getLeaderboard, postScore } from "./lib/api";
 import ScoreDialog from "./components/ScoreDialog";
+import FinishedDialog from "./components/FinishedDialog";
 
 const courses = [
   "CS1010S",
@@ -27,6 +28,7 @@ const MAX_ROUNDS = 5;
 function App() {
   const [showNameDialog, setShowNameDialog] = useState(true);
   const [showScoreDialog, setShowScoreDialog] = useState(false);
+  const [showFinishedDialog, setShowFinishedDialog] = useState(false);
   const [name, setName] = useState("Plebian");
   const [round, setRound] = useState(1);
   const [leaderboard, setLeaderboard] = useState([
@@ -41,6 +43,11 @@ function App() {
       grade: "A",
     },
   ]);
+  const [finalGrade, setFinalGrade] = useState(0.0);
+  const [currentShowScore, setCurrentShowScore] = useState({
+    course: "CS1010S",
+    grade: "A",
+  });
 
   const updateLeaderboard = async () => {
     const leaderboard = await getLeaderboard();
@@ -57,15 +64,31 @@ function App() {
 
   // Actually starts the next round
   const handleNextRound = () => {
+    if (round === MAX_ROUNDS) {
+      setFinalGrade(4.0);
+      setShowFinishedDialog(true);
+      return;
+    }
     setRound(round + 1);
   };
 
   // Ends the current round and sets the score
   const handleEndRound = () => {
     const finalResultsCopy = [...finalResults];
-    finalResultsCopy[round - 1].grade = "A"; // TODO: calculate an actual grade
+    const grade = "A"; // TODO: calculate an actual grade
+    finalResultsCopy[round - 1].grade = grade;
     setFinalResults(finalResultsCopy);
+    setCurrentShowScore({
+      course: finalResultsCopy[round - 1].course,
+      grade: grade,
+    });
     setShowScoreDialog(true);
+  };
+
+  const handleSubmitScore = async () => {
+    const leaderboard = await postScore(name, finalGrade);
+    setLeaderboard(leaderboard);
+    setShowScoreDialog(false);
   };
 
   useEffect(() => {
@@ -80,7 +103,13 @@ function App() {
         setOpen={setShowScoreDialog}
         open={showScoreDialog}
         handleNextRound={handleNextRound}
-        moduleInfo={finalResults[round - 1]}
+        moduleInfo={currentShowScore}
+      />
+      <FinishedDialog
+        setOpen={setShowFinishedDialog}
+        open={showFinishedDialog}
+        finalGrade={finalGrade}
+        handleSubmitScore={handleSubmitScore}
       />
       <div className="p-4 h-full flex flex-col">
         {/* Header */}
@@ -98,7 +127,6 @@ function App() {
               setOpen={setShowNameDialog}
               open={showNameDialog}
               setName={setName}
-              name={name}
             />
           </div>
         </div>
@@ -110,7 +138,7 @@ function App() {
             <div className="mt-3 space-y-1 overflow-hidden">
               <ul className="overflow-hidden">
                 {[...leaderboard].map((player, index) => (
-                  <li className="font-bold text-2xl">
+                  <li key={player.name} className="font-bold text-2xl">
                     <span className="text-neutral-600">{index + 1}.</span>{" "}
                     {player.name} -{" "}
                     <span className="secondary-text">{player.score}</span>
@@ -142,7 +170,7 @@ function App() {
                   handleEndRound();
                 }}
               >
-                CRASH OUT
+                CRASH OUT 💤
               </Button>
             </div>
             <div className="h-3/4 card-design">
@@ -150,7 +178,7 @@ function App() {
               <ul className="list-decimal list-inside">
                 <ul className="overflow-hidden">
                   {finalResults.map((course, index) => (
-                    <li className="font-bold text-2xl">
+                    <li key={course.course} className="font-bold text-2xl">
                       <span className="text-neutral-600">{index + 1}.</span>{" "}
                       {course.course} -{" "}
                       <span className="secondary-text">{course.grade}</span>

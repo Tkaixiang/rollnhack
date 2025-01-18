@@ -9,42 +9,30 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 
-function NameDialog({ setOpen, open, setName }) {
-  const [localName, setLocalName] = useState("");
-
+function ScoreDialog({ finalGrade, open, setOpen, handleSubmitScore }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Choose Name</Button>
-      </DialogTrigger>
+      <DialogTrigger />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Full Name (as per your student ID)</DialogTitle>
+          <DialogTitle>You survived a semester! 🥳</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              value={localName}
-              onChange={(e) => setLocalName(e.target.value)}
-              id="name"
-              className="col-span-3"
-            />
+          <div className="flex flex-col items-center">
+            <span>NUS has blessed you with a GPA of:</span>
+            <span className="text-6xl font-bold main-text">{finalGrade}</span>
           </div>
         </div>
         <DialogFooter>
           <Button
             type="submit"
             onClick={() => {
+              handleSubmitScore();
               setOpen(false);
-              setName(localName);
             }}
           >
-            Let's goooo!
+            Submit Score
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -52,4 +40,4 @@ function NameDialog({ setOpen, open, setName }) {
   );
 }
 
-export default NameDialog;
+export default ScoreDialog;

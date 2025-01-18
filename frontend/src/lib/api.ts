@@ -14,11 +14,13 @@ export const getName = async (name: string) => {
 };
 
 export const postScore = async (name: string, score: number) => {
-  await fetch(`${ADDRESS}/leaderboard`, {
+  const response = await fetch(`${ADDRESS}/leaderboard`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ name, score }),
   });
+  const jsonResult = await response.json();
+  return jsonResult.leaderboard;
 };

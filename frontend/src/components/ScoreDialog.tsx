@@ -16,10 +16,19 @@ function ScoreDialog({ moduleInfo, handleNextRound, open, setOpen }) {
       <DialogTrigger />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>You Completed {moduleInfo.course}!</DialogTitle>
+          <DialogTitle>
+            You <i>survived</i>?{" "}
+            <span className="text-main">{moduleInfo.course}</span>!
+          </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          The bell curve god has blessed you with a: {moduleInfo.grade}
+        <div className="flex flex-col items-center">
+          <span>
+            The bell curve god has blessed you with{" "}
+            {moduleInfo.grade === "A" ? "an" : "a"}:
+          </span>
+          <span className="text-6xl font-bold main-text">
+            {moduleInfo.grade}
+          </span>
         </div>
         <DialogFooter>
           <Button
