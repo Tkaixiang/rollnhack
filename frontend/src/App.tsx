@@ -40,7 +40,7 @@ function App() {
           {/* Graph of madness */}
           <div className="w-1/2 card-design">
             <div className="graph-placeholder">
-              <Graph />
+              <Graph isPaused={false} onPause={() => {}} />
             </div>
           </div>
 
