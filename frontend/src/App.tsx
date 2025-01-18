@@ -43,7 +43,7 @@ function App() {
   const [showScoreDialog, setShowScoreDialog] = useState(false);
   const [showFinishedDialog, setShowFinishedDialog] = useState(false);
   const [name, setName] = useState("");
-  const [round, setRound] = useState(1);
+  const [round, setRound] = useState(0);
   const [leaderboard, setLeaderboard] = useState([
     {
       name: "ZHD1997E",
@@ -67,13 +67,17 @@ function App() {
     setLeaderboard(leaderboard);
   };
 
-  const initRound = () => {
-    setRound(1);
+  const initMatch = () => {
+    setRound(0);
     const randomCourses = COURSES.sort(() => Math.random() - 0.5).slice(0, 5);
     const randomResults = randomCourses.map((course) => {
       return { course: course, grade: "" };
     });
     setFinalResults(randomResults);
+  };
+
+  const startMatch = () => {
+    setRound(1);
   };
 
   // Actually starts the next round
@@ -107,14 +111,14 @@ function App() {
     const leaderboard = await postScore(name, finalGrade);
     setLeaderboard(leaderboard);
     setShowScoreDialog(false);
-    initRound();
+    initMatch();
     setShowNameDialog(true);
     setName("");
   };
 
   useEffect(() => {
     updateLeaderboard();
-    initRound();
+    initMatch();
   }, []);
 
   return (
@@ -153,12 +157,12 @@ function App() {
           </div>
         </div>
         {/* Main Content */}
-        <div className="flex w-full h-full mt-4 space-x-4">
+        <div className="flex w-full h-full mt-4 space-x-4 overflow-hidden">
           {/* Dean's List */}
           <div className="w-1/4 card-design">
             <h1 className="main-text text-2xl ">Dean's List</h1>
-            <div className="mt-3 space-y-1 overflow-hidden">
-              <ul className="overflow-hidden">
+            <div className="mt-3 space-y-1 h-[90%] overflow-y-auto">
+              <ul className="">
                 {[...leaderboard].map((player, index) => (
                   <li key={player.name} className="font-bold text-2xl">
                     <span className="text-neutral-600">{index + 1}.</span>{" "}
@@ -181,22 +185,40 @@ function App() {
           {/* Finals Results and Sleep */}
           <div className="w-1/4 flex flex-col justify-center space-y-4">
             <div className="h-1/4 flex flex-col items-center justify-center card-design">
-              <span className="text-xs text-neutral-300">Studying for:</span>
-              <h1 className="secondary-text text-2xl">
-                {finalResults[round - 1].course}
-              </h1>
-              <span className="font-semibold text-neutral-300">
-                Module <span className="underline text-main">{round}</span> out
-                of 5
-              </span>
-              <Button
-                className="mt-6"
-                onClick={() => {
-                  handleEndRound();
-                }}
-              >
-                CRASH OUT 💤
-              </Button>
+              {round === 0 ? (
+                <>
+                  <span className="text-4xl mb-1">💀</span>
+                  <span className="mb-2">The dreaded finals approaches...</span>
+                  <Button
+                    onClick={() => {
+                      startMatch();
+                    }}
+                  >
+                    Start Mugging!
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <span className="text-xs text-neutral-300">
+                    Studying for:
+                  </span>
+                  <h1 className="secondary-text text-2xl">
+                    {finalResults[round - 1].course}
+                  </h1>
+                  <span className="font-semibold text-neutral-300">
+                    Module <span className="underline text-main">{round}</span>{" "}
+                    out of {MAX_ROUNDS}
+                  </span>
+                  <Button
+                    className="mt-6"
+                    onClick={() => {
+                      handleEndRound();
+                    }}
+                  >
+                    CRASH OUT 💤
+                  </Button>
+                </>
+              )}
             </div>
             <div className="h-3/4 card-design">
               <h3 className="main-text text-2xl mb-2">Finals Results</h3>

@@ -7,13 +7,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 function ScoreDialog({ finalGrade, open, setOpen, handleSubmitScore }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger />
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>You survived a semester! 🥳</DialogTitle>

@@ -1,18 +1,23 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
+
+const ANIME_LINKS = [
+  "https://c.tenor.com/u2f7GM10EKQAAAAC/tenor.gif",
+  "https://media1.tenor.com/m/Cj0YvuE94eoAAAAd/onimai-anime-sleep.gif",
+  "https://media1.tenor.com/m/dUkiteCccQQAAAAd/yuru-camp-kagamihara-nadeshiko.gif",
+  "https://media1.tenor.com/m/8DZuAbB5Up0AAAAd/anime-frieren.gif",
+  "https://media1.tenor.com/m/w8bVOlSAZkUAAAAC/spy-x-family-anya-spy-x-family.gif",
+];
 
 function ScoreDialog({ moduleInfo, handleNextRound, open, setOpen }) {
   return (
     <Dialog open={open}>
-      <DialogTrigger />
       <DialogContent close={false}>
         <DialogHeader>
           <DialogTitle>
@@ -22,14 +27,14 @@ function ScoreDialog({ moduleInfo, handleNextRound, open, setOpen }) {
         </DialogHeader>
         <div className="flex flex-col items-center">
           <img
-            src="https://c.tenor.com/u2f7GM10EKQAAAAC/tenor.gif"
-            className="my-4"
+            src={ANIME_LINKS[Math.floor(Math.random() * ANIME_LINKS.length)]}
+            className="my-4 w-64"
           />
           <span>
             The bell curve god has blessed you with{" "}
             {moduleInfo.grade === "A" ? "an" : "a"}:
           </span>
-          <span className="text-6xl font-bold main-text">
+          <span className="text-8xl font-bold main-text">
             {moduleInfo.grade}
           </span>
         </div>
