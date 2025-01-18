@@ -1,16 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import NameDialog from "./components/NameDialog";
 import { Button } from "./components/ui/button";
 import RetroGrid from "./components/ui/retro-grid";
 import Graph from "./components/Graph";
 import { Separator } from "./components/ui/separator";
+import { getLeaderboard } from "./lib/api";
 
 function App() {
   const [showDialog, setShowDialog] = useState(true);
   const [name, setName] = useState("Plebian");
   const [round, setRound] = useState(1);
   const [module, setModule] = useState("CS1101S");
+  const [leaderboard, setLeaderboard] = useState([
+    {
+      name: "ZHD1997E",
+      score: 4.6,
+    },
+  ]);
+
+  const updateLeaderboard = async () => {
+    const leaderboard = await getLeaderboard();
+    console.log(leaderboard);
+    setLeaderboard(leaderboard);
+  };
+
+  useEffect(() => {
+    updateLeaderboard();
+  }, []);
 
   return (
     <div className="bg-neutral-800 dark relative w-screen h-screen overflow-x-hidden">
@@ -40,7 +57,17 @@ function App() {
           {/* Dean's List */}
           <div className="w-1/4 card-design">
             <h1 className="main-text text-2xl ">Dean's List</h1>
-            <p>1. ZHD1997E - 4.6</p>
+            <div className="mt-3 space-y-1">
+              <ul>
+                {leaderboard.map((player, index) => (
+                  <li className="font-bold text-2xl">
+                    {index + 1}. {player.name} - <span></span>
+                    {player.score}
+                    <Separator className="bg-main" />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           {/* Graph of madness */}
           <div className="w-1/2 card-design">

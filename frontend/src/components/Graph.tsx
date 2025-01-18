@@ -56,8 +56,6 @@ const Graph = () => {
     };
   }, []);
 
-;
-
   const startGraphUpdates = (series, initialData) => {
     intervalIdRef.current = setInterval(() => {
       const lastTime = initialData[initialData.length - 1]?.time || 0;
@@ -104,34 +102,34 @@ const Graph = () => {
     const volatility = 10;
     let open = latestValueRef.current?.close || 50;
     let close = open;
-  
+
     switch (stateRef.current) {
       case "growth": // Linear-ish Growth
         close += Math.random() * 5 + 2; // Progressively increase
         if (Math.random() < 0.1) close += Math.random() * 20; // Occasional small spikes
         if (close >= 90) stateRef.current = "crash"; // Trigger crash after a threshold
         break;
-  
+
       case "spike": // Sudden Spike
         close += Math.random() * 30 + 10; // Big upward spike
         stateRef.current = "growth"; // Return to growth after a spike
         break;
-  
+
       case "crash": // Sudden Crash
         close -= Math.random() * 40 + 20; // Large drop
         close = Math.max(close, 10); // Prevent values below 10
         stateRef.current = "growth"; // Return to growth after crashing
         break;
-  
+
       default:
         stateRef.current = "growth"; // Ensure there's always a state
         break;
     }
-  
+
     // Add volatility for more natural movement
     const high = Math.max(open, close) + Math.random() * volatility;
     const low = Math.min(open, close) - Math.random() * volatility;
-  
+
     return { time, open, high, low, close };
   };
 

@@ -1,5 +1,7 @@
 import Fastify from "fastify";
 import { MongoClientInstance } from "./mongo.js";
+import cors from "@fastify/cors";
+
 const PORT = 8989;
 
 const fastify = Fastify();
@@ -8,6 +10,8 @@ const start = async () => {
   await MongoClientInstance.start();
   const db = MongoClientInstance.db;
   let leaderboardCollection = db.collection("leaderboard");
+
+  await fastify.register(cors, {});
 
   // Add custom error handler
   fastify.setErrorHandler((error, request, reply) => {
