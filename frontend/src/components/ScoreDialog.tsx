@@ -16,6 +16,7 @@ const ANIME_LINKS = [
 ];
 
 const GRADE_MESSAGES = {
+  "A+": "your academic weapon has earned you ",
   A: "the bell curve god has blessed you with ",
   "A-": "you almost achieved perfection, but settled for ",
   "B+": "your mugger powers have earned you ",
@@ -23,7 +24,7 @@ const GRADE_MESSAGES = {
   "B-": "your study playlist barely carried you to ",
   "C+": "surviving on maggie mee has led you to ",
   C: "your questionable study methods somehow got you ",
-  "C-": "your last-minute cramming adventure ends with ",
+  "D+": "your last-minute cramming adventure ends with ",
   D: "your Netflix breaks were too powerful, leaving you with ",
   F: "you crashed out with ",
 };

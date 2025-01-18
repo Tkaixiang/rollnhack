@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 import NameDialog from "./components/NameDialog";
 import { Button } from "./components/ui/button";
@@ -49,7 +49,7 @@ function App() {
   const [finalResults, setFinalResults] = useState([]);
   const [finalGrade, setFinalGrade] = useState("");
   const [currentShowScore, setCurrentShowScore] = useState({});
-  const [latestGraphValue, setLatestGraphValue] = useState(50); // Track the latest value from the graph
+  const latestGraphValue = useRef(50); // Track the latest value from the graph
   const [startLoadingGraph, setStartLoadingGraph] = useState(false); // Controls when the graph should load
 
   const updateLeaderboard = async () => {
@@ -88,10 +88,8 @@ function App() {
 
   const handleEndRound = () => {
     const finalResultsCopy = [...finalResults];
-    console.log(
-      "Received Graph Value " + finalResultsCopy
-    )
-    const grade = calculateGrade(latestGraphValue); // Determine grade based on latest value
+    console.log("Received Graph Value " + finalResultsCopy);
+    const grade = calculateGrade(); // Determine grade based on latest value
     finalResultsCopy[round - 1].grade = grade;
     setFinalResults(finalResultsCopy);
     setCurrentShowScore({
@@ -102,7 +100,9 @@ function App() {
     setStartLoadingGraph(false); // Stop the graph after ending the round
   };
 
-  const calculateGrade = (value) => {
+  const calculateGrade = () => {
+    const value = latestGraphValue.current;
+    console.log("Value: " + value);
     if (value >= 80) return "A+";
     if (value >= 75) return "A";
     if (value >= 70) return "A-";
@@ -115,7 +115,6 @@ function App() {
     if (value >= 35) return "D";
     return "F";
   };
-  
 
   const handleSubmitScore = async () => {
     const leaderboard = await postScore(name, finalGrade);
@@ -193,7 +192,7 @@ function App() {
           {/* Graph of madness */}
           <div className="h-[calc(100vh-25rem)] md:h-full w-full md:w-1/2 card-design md:order-2">
             <Graph
-              onUpdateLatestValue={setLatestGraphValue}
+              latestGraphValue={latestGraphValue}
               startLoading={startLoadingGraph}
               onGraphEnd={handleEndRound} // Pass handleEndRound to the Graph component
             />

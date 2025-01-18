@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
 
-const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
+const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
@@ -85,14 +85,15 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
         // Update finals score and hours studied
         setFinalsScore(variation.close);
         setHoursStudied(
-          Math.min(24, Number((nextIndex / 2 + subStepIndex / 60).toFixed(2)))
+          Math.min(24, Number((nextIndex / 2 + subStepIndex / 60).toFixed(2))),
         ); // Faster scaling
 
-        // Notify the parent of the latest value
-        if (subStepIndexRef.current === 29) {
-          // Adjusted for faster candle transitions
-          onUpdateLatestValue(variation.close);
-        }
+        // // Notify the parent of the latest value
+        // if (subStepIndexRef.current === 29) {
+        //   // Adjusted for faster candle transitions
+
+        // }
+        latestGraphValue.current = variation.close;
 
         subStepIndexRef.current += 1;
 
@@ -128,15 +129,15 @@ const Graph = ({ onUpdateLatestValue, startLoading, onGraphEnd }) => {
       const open = value; // The open of the next candle is the close of the previous one
       const close = Math.max(
         40,
-        Math.min(92, open + (Math.random() - 0.5) * 10)
+        Math.min(92, open + (Math.random() - 0.5) * 10),
       );
       const high = Math.min(
         92,
-        Math.max(open, close) + Math.random() * 0.1 * Math.abs(close - open)
+        Math.max(open, close) + Math.random() * 0.1 * Math.abs(close - open),
       );
       const low = Math.max(
         40,
-        Math.min(open, close) - Math.random() * 0.1 * Math.abs(close - open)
+        Math.min(open, close) - Math.random() * 0.1 * Math.abs(close - open),
       );
 
       data.push({
