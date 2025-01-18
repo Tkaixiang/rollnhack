@@ -8,20 +8,23 @@ import { Separator } from "./components/ui/separator";
 
 function App() {
   const [showDialog, setShowDialog] = useState(true);
-  const [name, setName] = useState("THIS IS A NAME");
+  const [name, setName] = useState("Plebian");
 
   return (
     <div className="bg-neutral-800 dark relative w-screen h-screen overflow-x-hidden">
       <RetroGrid />
       <div className="p-4 h-full flex flex-col">
         {/* Header */}
-        <div className="flex card-design items-center">
+        <div className="flex justify-between card-design items-center">
           <h1 className="text-3xl main-text">CRASH OUT!</h1>
-          <div>
-            <span className="mr-5 font-bold text-neutral-300">
+          <div className="flex items-center">
+            <span className="mr-2 font-bold text-neutral-300">
               <span className="main-text mr-1">Student Name:</span> {name}
             </span>
-            <Separator className="flex" />
+            <Separator
+              orientation="vertical"
+              className="flex py-4 bg-slate-500 mr-2"
+            />
             <NameDialog
               setOpen={setShowDialog}
               open={showDialog}
@@ -39,9 +42,7 @@ function App() {
           </div>
           {/* Graph of madness */}
           <div className="w-1/2 card-design">
-            <div className="graph-placeholder">
-              <Graph isPaused={false} onPause={() => {}} />
-            </div>
+            <Graph isPaused={false} onPause={() => {}} />
           </div>
 
           {/* Finals Results and Sleep */}
