@@ -68,10 +68,7 @@ function App() {
 
   const startMatch = () => {
     setRound(1);
-  };
-
-  const startMatch = () => {
-    setRound(1);
+    setStartLoadingGraph(true);
   };
 
   const handleNextRound = () => {
@@ -158,7 +155,6 @@ function App() {
               open={showNameDialog}
               setName={(name) => {
                 setName(name);
-                setStartLoadingGraph(true); // Start the graph when the name is set
               }}
             />
           </div>

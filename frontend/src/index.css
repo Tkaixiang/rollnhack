@@ -48,10 +48,10 @@
 @layer components {
   .card-design {
     /* From https://css.glass */
-    background: rgba(49, 49, 49, 0.31);
+    background: rgba(43, 43, 43, 0.1);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     border: 1px solid rgba(200, 160, 160, 0.3);
     @apply border-neutral-600 border-2 shadow-2xl w-full justify-between p-2 md:p-4 rounded-lg;
