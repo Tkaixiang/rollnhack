@@ -45,8 +45,8 @@ export default function RetroGrid({
     "--grid-angle": `${angle}deg`,
     "--cell-size": `${cellSize}px`,
     "--opacity": opacity,
-    "--light-line": lightLineColor,
-    "--dark-line": darkLineColor,
+    "--light-line": "#fd9745",
+    "--dark-line": "#fd9745",
   } as React.CSSProperties;
 
   return (

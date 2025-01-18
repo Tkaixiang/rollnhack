@@ -8,36 +8,36 @@ function App() {
   const [showDialog, setShowDialog] = useState(true);
 
   return (
-    <div className="bg-neutral-800 relative w-screen h-screen overflow-hidden">
+    <div className="bg-neutral-800 dark relative w-screen h-screen overflow-x-hidden">
       <RetroGrid />
-      <div className="p-4">
+      <div className="p-4 h-full flex flex-col">
         {/* Header */}
-        <div className="flex h-18 w-full justify-between">
-          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-orange-600  to-yellow-400 inline-block text-transparent bg-clip-text">
+        <div className="flex card-design items-center">
+          <h1 className="text-3xl font-extrabold relative [text-shadow:_2px_2px_0_rgb(0_0_0),_4px_4px_0_rgb(203_213_225)] text-main">
             CRASH OUT!
           </h1>
           <NameDialog setOpen={setShowDialog} open={showDialog} />
         </div>
         {/* Main Content */}
-        <div className="flex h-full w-full mt-8">
+        <div className="flex w-full h-full mt-4 space-x-4">
           {/* Dean's List */}
-          <div className="w-1/4">
-            <h3>Dean's List</h3>
+          <div className="w-1/4 card-design">
+            <h1 className="main-text">Dean's List</h1>
             <p>1. ZHD1997E - 4.6</p>
           </div>
           {/* Graph of madness */}
-          <div className="w-1/2">
+          <div className="w-1/2 card-design">
             <div className="graph-placeholder">
               <p>Graph Placeholder</p>
             </div>
           </div>
 
           {/* Finals Results and Sleep */}
-          <div className="w-1/4 flex flex-col justify-center">
-            <div className="h-1/4 flex justify-center">
+          <div className="w-1/4 flex flex-col justify-center space-y-4">
+            <div className="h-1/4 flex justify-center card-design">
               <Button>CRASH OUT</Button>
             </div>
-            <div className="h-3/4">
+            <div className="h-3/4 card-design">
               <h3>FINALS RESULTS</h3>
               <ul>
                 <li>CS1101S - B</li>
