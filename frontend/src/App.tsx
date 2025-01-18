@@ -7,6 +7,22 @@ import Graph from "./components/Graph";
 import { Separator } from "./components/ui/separator";
 import { getLeaderboard } from "./lib/api";
 
+const courses = [
+  "CS1010S",
+  "CS1101S",
+  "CS1231S",
+  "CS3213S",
+  "MA1521",
+  "MA1522",
+  "CS2030S",
+  "CS2040S",
+  "CS2100",
+  "CS2101",
+  "CS2102",
+  "CS2103",
+];
+const MAX_ROUNDS = 5;
+
 function App() {
   const [showDialog, setShowDialog] = useState(true);
   const [name, setName] = useState("Plebian");
@@ -18,15 +34,25 @@ function App() {
       score: 4.6,
     },
   ]);
+  const [finalResults, setFinalResults] = useState({});
 
   const updateLeaderboard = async () => {
     const leaderboard = await getLeaderboard();
-    console.log(leaderboard);
     setLeaderboard(leaderboard);
+  };
+
+  const setRandomCourses = () => {
+    const randomCourses = courses.sort(() => Math.random() - 0.5).slice(0, 5);
+    const newResults = {};
+    randomCourses.forEach((course) => {
+      newResults[course] = "";
+    });
+    setFinalResults(newResults);
   };
 
   useEffect(() => {
     updateLeaderboard();
+    setRandomCourses();
   }, []);
 
   return (
@@ -57,13 +83,14 @@ function App() {
           {/* Dean's List */}
           <div className="w-1/4 card-design">
             <h1 className="main-text text-2xl ">Dean's List</h1>
-            <div className="mt-3 space-y-1">
-              <ul>
-                {leaderboard.map((player, index) => (
+            <div className="mt-3 space-y-1 overflow-hidden">
+              <ul className="overflow-hidden">
+                {[...leaderboard].map((player, index) => (
                   <li className="font-bold text-2xl">
-                    {index + 1}. {player.name} - <span></span>
-                    {player.score}
-                    <Separator className="bg-main" />
+                    <span className="text-neutral-600">{index + 1}.</span>{" "}
+                    {player.name} -{" "}
+                    <span className="secondary-text">{player.score}</span>
+                    <Separator className="bg-main mt-2" />
                   </li>
                 ))}
               </ul>
@@ -88,12 +115,19 @@ function App() {
             <div className="h-3/4 card-design">
               <h3 className="main-text text-2xl mb-2">Finals Results</h3>
               <ul className="list-decimal list-inside">
-                <li className="text-xl text-gray-400">CS1101S - B</li>
-                <li className="text-xl text-gray-400">CS1231S - C+</li>
-                <li className="text-xl text-gray-400">CS1101S</li>
-                <li className="text-xl text-gray-400">MA1522</li>
-                <li className="text-xl text-gray-400">MA1521</li>
-            </ul>
+                <ul className="overflow-hidden">
+                  {Object.keys(finalResults).map((course, index) => (
+                    <li className="font-bold text-2xl">
+                      <span className="text-neutral-600">{index + 1}.</span>{" "}
+                      {course} -{" "}
+                      <span className="secondary-text">
+                        {finalResults[course]}
+                      </span>
+                      <Separator className="bg-main mt-2" />
+                    </li>
+                  ))}
+                </ul>
+              </ul>
             </div>
           </div>
         </div>

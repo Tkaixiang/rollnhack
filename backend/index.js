@@ -76,6 +76,7 @@ const start = async () => {
   fastify.get("/leaderboard", async (request, reply) => {
     const leaderboard = await leaderboardCollection
       .find({}, { projection: { _id: 0 } })
+      .sort({ score: -1 })
       .toArray();
     reply.send({ success: true, leaderboard });
   });
