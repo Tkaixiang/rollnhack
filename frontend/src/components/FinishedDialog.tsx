@@ -5,21 +5,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import advocado from "@/assets/1.png";
 
 function ScoreDialog({ finalGrade, open, setOpen, handleSubmitScore }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger />
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]" close={false}>
         <DialogHeader>
           <DialogTitle>You survived a semester! 🥳</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="flex flex-col items-center">
+            <img src={advocado} />
             <span>NUS has blessed you with a GPA of:</span>
             <span className="text-6xl font-bold main-text">{finalGrade}</span>
           </div>
