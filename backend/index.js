@@ -60,7 +60,10 @@ const start = async () => {
       return reply.status(400).send({ success: false, error: "Invalid GPA" });
     }
 
-    const result = await leaderboardCollection.insertOne({ name, score });
+    const result = await leaderboardCollection.insertOne({
+      name,
+      score: parseFloat(score),
+    });
     if (!result.acknowledged) {
       return reply
         .status(500)
@@ -68,6 +71,7 @@ const start = async () => {
     }
     const leaderboard = await leaderboardCollection
       .find({}, { projection: { _id: 0 } })
+      .sort({ score: -1 })
       .toArray();
 
     reply.send({ success: true, leaderboard: leaderboard });

@@ -9,13 +9,28 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { getName } from "@/lib/api";
+import { useEffect, useState } from "react";
 
-function NameDialog({ setOpen, open, setName }) {
+function NameDialog({ setOpen, open, setName, name }) {
   const [localName, setLocalName] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setLocalName(name);
+  }, [name]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!name && !open) {
+          setError("Name cannot be empty");
+          return;
+        }
+        setOpen(open);
+      }}
+    >
       <DialogTrigger asChild>
         <Button>Choose Name</Button>
       </DialogTrigger>
@@ -23,23 +38,36 @@ function NameDialog({ setOpen, open, setName }) {
         <DialogHeader>
           <DialogTitle>Full Name (as per your student ID)</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              value={localName}
-              onChange={(e) => setLocalName(e.target.value)}
-              id="name"
-              className="col-span-3"
-            />
-          </div>
+        <div className="flex flex-col">
+          <Label htmlFor="name" className="mb-2">
+            Name
+          </Label>
+          <Input
+            value={localName}
+            onChange={(e) => {
+              setLocalName(e.target.value);
+              setError("");
+            }}
+            id="name"
+            className="col-span-3"
+          />
+          <span className="text-red-500 mt-2">{error}</span>
         </div>
         <DialogFooter>
           <Button
             type="submit"
-            onClick={() => {
+            onClick={async () => {
+              // Check if nme has been used
+              if (!localName) {
+                setError("Name cannot be empty");
+                return;
+              }
+              const name = await getName(localName);
+              if (name) {
+                setError("Someone else stole your name :c");
+                return;
+              }
+
               setOpen(false);
               setName(localName);
             }}

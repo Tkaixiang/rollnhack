@@ -1,27 +1,30 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 function ScoreDialog({ moduleInfo, handleNextRound, open, setOpen }) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open}>
       <DialogTrigger />
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent close={false}>
         <DialogHeader>
           <DialogTitle>
-            You <i>survived</i>?{" "}
-            <span className="text-main">{moduleInfo.course}</span>!
+            You <i>CRASHED OUT</i>. The finals for{" "}
+            <span className="text-main">{moduleInfo.course}</span> are over!
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col items-center">
+          <img
+            src="https://c.tenor.com/u2f7GM10EKQAAAAC/tenor.gif"
+            className="my-4"
+          />
           <span>
             The bell curve god has blessed you with{" "}
             {moduleInfo.grade === "A" ? "an" : "a"}:

@@ -13,7 +13,7 @@ export const getName = async (name: string) => {
   return jsonResult.player;
 };
 
-export const postScore = async (name: string, score: number) => {
+export const postScore = async (name: string, score: string) => {
   const response = await fetch(`${ADDRESS}/leaderboard`, {
     method: "POST",
     headers: {

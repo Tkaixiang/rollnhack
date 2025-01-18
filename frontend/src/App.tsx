@@ -9,7 +9,7 @@ import { getLeaderboard, postScore } from "./lib/api";
 import ScoreDialog from "./components/ScoreDialog";
 import FinishedDialog from "./components/FinishedDialog";
 
-const courses = [
+const COURSES = [
   "CS1010S",
   "CS1101S",
   "CS1231S",
@@ -24,12 +24,25 @@ const courses = [
   "CS2103",
 ];
 const MAX_ROUNDS = 5;
+const TROPHIES = ["🥇", "🥈", "🥉"];
+const GRADE_MAPPINGS = {
+  A: 5.0,
+  "A-": 4.5,
+  "B+": 4.0,
+  B: 3.5,
+  "B-": 3.0,
+  "C+": 2.5,
+  C: 2.0,
+  "C-": 1.5,
+  D: 1.0,
+  F: 0.0,
+};
 
 function App() {
   const [showNameDialog, setShowNameDialog] = useState(true);
   const [showScoreDialog, setShowScoreDialog] = useState(false);
   const [showFinishedDialog, setShowFinishedDialog] = useState(false);
-  const [name, setName] = useState("Plebian");
+  const [name, setName] = useState("");
   const [round, setRound] = useState(1);
   const [leaderboard, setLeaderboard] = useState([
     {
@@ -43,7 +56,7 @@ function App() {
       grade: "A",
     },
   ]);
-  const [finalGrade, setFinalGrade] = useState(0.0);
+  const [finalGrade, setFinalGrade] = useState("");
   const [currentShowScore, setCurrentShowScore] = useState({
     course: "CS1010S",
     grade: "A",
@@ -55,7 +68,8 @@ function App() {
   };
 
   const initRound = () => {
-    const randomCourses = courses.sort(() => Math.random() - 0.5).slice(0, 5);
+    setRound(1);
+    const randomCourses = COURSES.sort(() => Math.random() - 0.5).slice(0, 5);
     const randomResults = randomCourses.map((course) => {
       return { course: course, grade: "" };
     });
@@ -65,7 +79,11 @@ function App() {
   // Actually starts the next round
   const handleNextRound = () => {
     if (round === MAX_ROUNDS) {
-      setFinalGrade(4.0);
+      let totalGrade = 0;
+      for (const result of finalResults) {
+        totalGrade += GRADE_MAPPINGS[result.grade];
+      }
+      setFinalGrade((totalGrade / MAX_ROUNDS).toFixed(2));
       setShowFinishedDialog(true);
       return;
     }
@@ -89,6 +107,9 @@ function App() {
     const leaderboard = await postScore(name, finalGrade);
     setLeaderboard(leaderboard);
     setShowScoreDialog(false);
+    initRound();
+    setShowNameDialog(true);
+    setName("");
   };
 
   useEffect(() => {
@@ -98,7 +119,6 @@ function App() {
 
   return (
     <div className="bg-neutral-800 dark relative w-screen h-screen overflow-x-hidden">
-      <RetroGrid />
       <ScoreDialog
         setOpen={setShowScoreDialog}
         open={showScoreDialog}
@@ -111,6 +131,7 @@ function App() {
         finalGrade={finalGrade}
         handleSubmitScore={handleSubmitScore}
       />
+      <RetroGrid />
       <div className="p-4 h-full flex flex-col">
         {/* Header */}
         <div className="flex justify-between card-design items-center">
@@ -124,6 +145,7 @@ function App() {
               className="flex py-4 bg-slate-500 mr-2"
             />
             <NameDialog
+              name={name}
               setOpen={setShowNameDialog}
               open={showNameDialog}
               setName={setName}
@@ -141,7 +163,10 @@ function App() {
                   <li key={player.name} className="font-bold text-2xl">
                     <span className="text-neutral-600">{index + 1}.</span>{" "}
                     {player.name} -{" "}
-                    <span className="secondary-text">{player.score}</span>
+                    <span className="secondary-text mr-3">
+                      {player.score.toFixed(2)}
+                    </span>
+                    {index <= 2 ? TROPHIES[index] : ""}
                     <Separator className="bg-main mt-2" />
                   </li>
                 ))}
