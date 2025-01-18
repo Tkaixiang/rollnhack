@@ -102,7 +102,6 @@ function App() {
 
   const calculateGrade = () => {
     const value = latestGraphValue.current;
-    console.log("Value: " + value);
     if (value >= 80) return "A+";
     if (value >= 75) return "A";
     if (value >= 70) return "A-";
