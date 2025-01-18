@@ -50,6 +50,7 @@ const Graph = ({ isPaused, onPause }) => {
     const intervalId = setInterval(() => {
       const lastTime = initialData[initialData.length - 1]?.time || 0;
       const newCandle = generateRandomCandle(lastTime + 1);
+      console.log(initialData);
       initialData.push(newCandle);
       series.update(newCandle);
 
@@ -70,6 +71,7 @@ const Graph = ({ isPaused, onPause }) => {
       if (latestValueRef.current) onPause(latestValueRef.current.close);
     } else {
       // Resume updates if not paused
+      console.log(seriesRef.current.data);
       startGraphUpdates(seriesRef.current, seriesRef.current.data);
     }
   }, [isPaused]);
