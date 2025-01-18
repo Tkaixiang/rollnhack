@@ -9,6 +9,8 @@ import { Separator } from "./components/ui/separator";
 function App() {
   const [showDialog, setShowDialog] = useState(true);
   const [name, setName] = useState("Plebian");
+  const [round, setRound] = useState(1);
+  const [module, setModule] = useState("CS1101S");
 
   return (
     <div className="bg-neutral-800 dark relative w-screen h-screen overflow-x-hidden">
@@ -47,8 +49,14 @@ function App() {
 
           {/* Finals Results and Sleep */}
           <div className="w-1/4 flex flex-col justify-center space-y-4">
-            <div className="h-1/4 flex justify-center card-design">
-              <Button>CRASH OUT</Button>
+            <div className="h-1/4 flex flex-col items-center justify-center card-design">
+              <span className="text-xs text-neutral-300">Studying for:</span>
+              <h1 className="secondary-text text-2xl">{module}</h1>
+              <span className="font-semibold text-neutral-300">
+                Module <span className="underline text-main">{round}</span> out
+                of 5
+              </span>
+              <Button className="mt-6">CRASH OUT</Button>
             </div>
             <div className="h-3/4 card-design">
               <h3 className="main-text text-2xl">Finals Results</h3>
