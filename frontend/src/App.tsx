@@ -3,6 +3,7 @@ import "./App.css";
 import NameDialog from "./components/NameDialog";
 import { Button } from "./components/ui/button";
 import RetroGrid from "./components/ui/retro-grid";
+import Graph from "./components/Graph";
 
 function App() {
   const [showDialog, setShowDialog] = useState(true);
@@ -28,7 +29,7 @@ function App() {
           {/* Graph of madness */}
           <div className="w-1/2 card-design">
             <div className="graph-placeholder">
-              <p>Graph Placeholder</p>
+              <Graph />
             </div>
           </div>
 
