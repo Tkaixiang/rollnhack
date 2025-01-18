@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import NameDialog from './components/NameDialog'
 
@@ -12,8 +10,7 @@ function App() {
     <div className="app-container"> 
       {/* Header */}
       <div className="header">
-        <div className="header-title">CRASH OUT</div>
-        <div className="header-icon">?</div>
+        <div className="header-title">CRASH OUT!</div>
         <button onClick={() => setShowDialog(true)}>Change username</button> 
       </div>       
     {/* Main Content */}
