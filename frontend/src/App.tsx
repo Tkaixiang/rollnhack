@@ -44,7 +44,7 @@ function App() {
           </div>
           {/* Graph of madness */}
           <div className="w-1/2 card-design">
-            <Graph isPaused={false} onPause={() => {}} />
+            <Graph />
           </div>
 
           {/* Finals Results and Sleep */}
