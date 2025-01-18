@@ -51,12 +51,14 @@ function App() {
               <Button>CRASH OUT</Button>
             </div>
             <div className="h-3/4 card-design">
-              <h3 className="main-text text-2xl">Finals Results</h3>
-              <ul>
-                <li>CS1101S - B</li>
-                <li>CS1231S</li>
-                <li>CS1101S</li>
-              </ul>
+              <h3 className="main-text text-2xl mb-2">Finals Results</h3>
+              <ul className="list-decimal list-inside">
+                <li className="text-xl text-gray-400">CS1101S - B</li>
+                <li className="text-xl text-gray-400">CS1231S - C+</li>
+                <li className="text-xl text-gray-400">CS1101S</li>
+                <li className="text-xl text-gray-400">MA1522</li>
+                <li className="text-xl text-gray-400">MA1521</li>
+            </ul>
             </div>
           </div>
         </div>
