@@ -136,12 +136,12 @@ function App() {
         handleSubmitScore={handleSubmitScore}
       />
       <RetroGrid />
-      <div className="p-4 h-full flex flex-col">
+      <div className="p-4 h-full flex flex-col md:overflow-hidden overflow-y-auto">
         {/* Header */}
-        <div className="flex justify-between card-design items-center">
-          <h1 className="text-3xl main-text">CRASH OUT!</h1>
+        <div className="flex md:flex-row flex-col justify-between card-design items-center">
+          <h1 className="text-3xl main-text md:mb-0 mb-3">CRASH OUT!</h1>
           <div className="flex items-center">
-            <span className="mr-2 font-bold text-neutral-300">
+            <span className="mr-2 font-bold text-neutral-300 text-center">
               <span className="main-text mr-1">Student Name:</span> {name}
             </span>
             <Separator
@@ -157,9 +157,9 @@ function App() {
           </div>
         </div>
         {/* Main Content */}
-        <div className="flex w-full h-full mt-4 space-x-4 overflow-hidden">
+        <div className="flex md:flex-row flex-col w-full md:h-full md:mt-4 space-y-4 md:space-y-0 md:space-x-4 md:overflow-hidden">
           {/* Dean's List */}
-          <div className="w-1/4 card-design">
+          <div className="w-full md:w-1/4 card-design order-3 md:order-1 md:mt-0 mt-4">
             <h1 className="main-text text-2xl ">Dean's List</h1>
             <div className="mt-3 space-y-1 h-[90%] overflow-y-auto">
               <ul className="">
@@ -178,13 +178,13 @@ function App() {
             </div>
           </div>
           {/* Graph of madness */}
-          <div className="w-1/2 card-design">
+          <div className="h-[calc(100vh-25rem)] md:h-full w-full md:w-1/2 card-design md:order-2">
             <Graph />
           </div>
 
           {/* Finals Results and Sleep */}
-          <div className="w-1/4 flex flex-col justify-center space-y-4">
-            <div className="h-1/4 flex flex-col items-center justify-center card-design">
+          <div className="w-full md:w-1/4 flex flex-col justify-center space-y-4 md:order-3">
+            <div className="md:h-1/4 flex flex-col items-center justify-center card-design">
               {round === 0 ? (
                 <>
                   <span className="text-4xl mb-1">💀</span>
@@ -220,7 +220,7 @@ function App() {
                 </>
               )}
             </div>
-            <div className="h-3/4 card-design">
+            <div className="md:h-3/4 card-design">
               <h3 className="main-text text-2xl mb-2">Finals Results</h3>
               <ul className="list-decimal list-inside">
                 <ul className="overflow-hidden">

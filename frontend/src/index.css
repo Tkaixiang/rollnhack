@@ -54,7 +54,7 @@
     backdrop-filter: blur(1.5px);
     -webkit-backdrop-filter: blur(2px);
     border: 1px solid rgba(200, 160, 160, 0.3);
-    @apply border-neutral-600 border-2 shadow-2xl w-full justify-between p-4 rounded-lg;
+    @apply border-neutral-600 border-2 shadow-2xl w-full justify-between p-2 md:p-4 rounded-lg;
   }
 
   .main-text {
