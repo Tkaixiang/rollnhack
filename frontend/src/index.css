@@ -51,13 +51,13 @@
     background: rgba(49, 49, 49, 0.31);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(3.1px);
+    backdrop-filter: blur(1.5px);
     -webkit-backdrop-filter: blur(2px);
-    border: 1px solid rgba(49, 49, 49, 0.3);
+    border: 1px solid rgba(200, 160, 160, 0.3);
     @apply border-neutral-600 border-2 shadow-2xl w-full justify-between p-4 rounded-lg;
   }
 
   .main-text {
-    @apply shadow-2xl font-extrabold bg-gradient-to-r from-orange-600 to-yellow-400 inline-block text-transparent bg-clip-text;
+    @apply font-extrabold relative [text-shadow:_2px_2px_0_rgb(0_0_0),_4px_4px_0_rgb(71_85_105)] text-main;
   }
 }

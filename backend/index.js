@@ -52,6 +52,10 @@ const start = async () => {
         .send({ success: false, error: "Player name already exists :c" });
     }
 
+    if (!(score >= 0.0 && score <= 5.0)) {
+      return reply.status(400).send({ success: false, error: "Invalid GPA" });
+    }
+
     const result = await leaderboardCollection.insertOne({ name, score });
     if (!result.acknowledged) {
       return reply

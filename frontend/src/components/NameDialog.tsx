@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function NameDialog({ setOpen, open }) {
+function NameDialog({ setOpen, open, setName, name }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -25,7 +25,12 @@ function NameDialog({ setOpen, open }) {
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input id="name" className="col-span-3" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              id="name"
+              className="col-span-3"
+            />
           </div>
         </div>
         <DialogFooter>
