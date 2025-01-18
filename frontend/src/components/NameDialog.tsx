@@ -24,7 +24,7 @@ function NameDialog({ setOpen, open, setName, name }) {
     <Dialog
       open={open}
       onOpenChange={(open) => {
-        if (!name && !open) {
+        if (!localName && !open) {
           setError("Name cannot be empty");
           return;
         }
@@ -36,11 +36,25 @@ function NameDialog({ setOpen, open, setName, name }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Full Name (as per your student ID)</DialogTitle>
+          <DialogTitle>Welcome to CRASH OUT!</DialogTitle>
         </DialogHeader>
+        <div className="mb-4">
+          <p className="text-neutral-600">
+          Balance your study hours wisely to excel in your modules. While studying more improves performance, overworking can lead to burnout—'CRASH OUT.' Strive for top grades by managing effort and rest effectively!
+          </p>
+          <h3 className="text-lg font-semibold mt-3">Grading Table</h3>
+          <ul className="text-neutral-600">
+            <li>A: 70 and above</li>
+            <li>A-: 60 to 69</li>
+            <li>B+: 50 to 59</li>
+            <li>B: 40 to 49</li>
+            <li>C: 30 to 39</li>
+            <li>F: Below 30</li>
+          </ul>
+        </div>
         <div className="flex flex-col">
           <Label htmlFor="name" className="mb-2">
-            Name
+            Name (as per your student ID)
           </Label>
           <Input
             value={localName}
@@ -57,13 +71,12 @@ function NameDialog({ setOpen, open, setName, name }) {
           <Button
             type="submit"
             onClick={async () => {
-              // Check if nme has been used
               if (!localName) {
                 setError("Name cannot be empty");
                 return;
               }
-              const name = await getName(localName);
-              if (name) {
+              const nameExists = await getName(localName);
+              if (nameExists) {
                 setError("Someone else stole your name :c");
                 return;
               }

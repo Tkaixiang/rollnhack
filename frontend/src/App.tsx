@@ -44,23 +44,12 @@ function App() {
   const [showFinishedDialog, setShowFinishedDialog] = useState(false);
   const [name, setName] = useState("");
   const [round, setRound] = useState(1);
-  const [leaderboard, setLeaderboard] = useState([
-    {
-      name: "ZHD1997E",
-      score: 4.6,
-    },
-  ]);
-  const [finalResults, setFinalResults] = useState([
-    {
-      course: "CS1010S",
-      grade: "A",
-    },
-  ]);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [finalResults, setFinalResults] = useState([]);
   const [finalGrade, setFinalGrade] = useState("");
-  const [currentShowScore, setCurrentShowScore] = useState({
-    course: "CS1010S",
-    grade: "A",
-  });
+  const [currentShowScore, setCurrentShowScore] = useState({});
+  const [latestGraphValue, setLatestGraphValue] = useState(50); // Track the latest value from the graph
+  const [startLoadingGraph, setStartLoadingGraph] = useState(false); // Controls when the graph should load
 
   const updateLeaderboard = async () => {
     const leaderboard = await getLeaderboard();
@@ -70,13 +59,13 @@ function App() {
   const initRound = () => {
     setRound(1);
     const randomCourses = COURSES.sort(() => Math.random() - 0.5).slice(0, 5);
-    const randomResults = randomCourses.map((course) => {
-      return { course: course, grade: "" };
-    });
+    const randomResults = randomCourses.map((course) => ({
+      course: course,
+      grade: "",
+    }));
     setFinalResults(randomResults);
   };
 
-  // Actually starts the next round
   const handleNextRound = () => {
     if (round === MAX_ROUNDS) {
       let totalGrade = 0;
@@ -88,12 +77,12 @@ function App() {
       return;
     }
     setRound(round + 1);
+    setStartLoadingGraph(true); // Reset and start the graph for the next round
   };
 
-  // Ends the current round and sets the score
   const handleEndRound = () => {
     const finalResultsCopy = [...finalResults];
-    const grade = "A"; // TODO: calculate an actual grade
+    const grade = calculateGrade(latestGraphValue); // Determine grade based on latest value
     finalResultsCopy[round - 1].grade = grade;
     setFinalResults(finalResultsCopy);
     setCurrentShowScore({
@@ -101,6 +90,16 @@ function App() {
       grade: grade,
     });
     setShowScoreDialog(true);
+    setStartLoadingGraph(false); // Stop the graph after ending the round
+  };
+
+  const calculateGrade = (value) => {
+    if (value >= 70) return "A";
+    if (value >= 60) return "A-";
+    if (value >= 50) return "B+";
+    if (value >= 40) return "B";
+    if (value >= 30) return "C";
+    return "F";
   };
 
   const handleSubmitScore = async () => {
@@ -110,6 +109,7 @@ function App() {
     initRound();
     setShowNameDialog(true);
     setName("");
+    setStartLoadingGraph(false); // Stop the graph until the user inputs their name
   };
 
   useEffect(() => {
@@ -148,7 +148,10 @@ function App() {
               name={name}
               setOpen={setShowNameDialog}
               open={showNameDialog}
-              setName={setName}
+              setName={(name) => {
+                setName(name);
+                setStartLoadingGraph(true); // Start the graph when the name is set
+              }}
             />
           </div>
         </div>
@@ -175,7 +178,11 @@ function App() {
           </div>
           {/* Graph of madness */}
           <div className="w-1/2 card-design">
-            <Graph />
+            <Graph
+              onUpdateLatestValue={setLatestGraphValue}
+              startLoading={startLoadingGraph}
+              onGraphEnd={handleEndRound} // Pass handleEndRound to the Graph component
+            />
           </div>
 
           {/* Finals Results and Sleep */}
@@ -183,7 +190,7 @@ function App() {
             <div className="h-1/4 flex flex-col items-center justify-center card-design">
               <span className="text-xs text-neutral-300">Studying for:</span>
               <h1 className="secondary-text text-2xl">
-                {finalResults[round - 1].course}
+                {finalResults[round - 1]?.course}
               </h1>
               <span className="font-semibold text-neutral-300">
                 Module <span className="underline text-main">{round}</span> out
