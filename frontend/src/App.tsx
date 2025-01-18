@@ -6,6 +6,7 @@ import RetroGrid from "./components/ui/retro-grid";
 import Graph from "./components/Graph";
 import { Separator } from "./components/ui/separator";
 import { getLeaderboard } from "./lib/api";
+import ScoreDialog from "./components/ScoreDialog";
 
 const courses = [
   "CS1010S",
@@ -24,40 +25,63 @@ const courses = [
 const MAX_ROUNDS = 5;
 
 function App() {
-  const [showDialog, setShowDialog] = useState(true);
+  const [showNameDialog, setShowNameDialog] = useState(true);
+  const [showScoreDialog, setShowScoreDialog] = useState(false);
   const [name, setName] = useState("Plebian");
   const [round, setRound] = useState(1);
-  const [module, setModule] = useState("CS1101S");
   const [leaderboard, setLeaderboard] = useState([
     {
       name: "ZHD1997E",
       score: 4.6,
     },
   ]);
-  const [finalResults, setFinalResults] = useState({});
+  const [finalResults, setFinalResults] = useState([
+    {
+      course: "CS1010S",
+      grade: "A",
+    },
+  ]);
 
   const updateLeaderboard = async () => {
     const leaderboard = await getLeaderboard();
     setLeaderboard(leaderboard);
   };
 
-  const setRandomCourses = () => {
+  const initRound = () => {
     const randomCourses = courses.sort(() => Math.random() - 0.5).slice(0, 5);
-    const newResults = {};
-    randomCourses.forEach((course) => {
-      newResults[course] = "";
+    const randomResults = randomCourses.map((course) => {
+      return { course: course, grade: "" };
     });
-    setFinalResults(newResults);
+    setFinalResults(randomResults);
+  };
+
+  // Actually starts the next round
+  const handleNextRound = () => {
+    setRound(round + 1);
+  };
+
+  // Ends the current round and sets the score
+  const handleEndRound = () => {
+    const finalResultsCopy = [...finalResults];
+    finalResultsCopy[round - 1].grade = "A"; // TODO: calculate an actual grade
+    setFinalResults(finalResultsCopy);
+    setShowScoreDialog(true);
   };
 
   useEffect(() => {
     updateLeaderboard();
-    setRandomCourses();
+    initRound();
   }, []);
 
   return (
     <div className="bg-neutral-800 dark relative w-screen h-screen overflow-x-hidden">
       <RetroGrid />
+      <ScoreDialog
+        setOpen={setShowScoreDialog}
+        open={showScoreDialog}
+        handleNextRound={handleNextRound}
+        moduleInfo={finalResults[round - 1]}
+      />
       <div className="p-4 h-full flex flex-col">
         {/* Header */}
         <div className="flex justify-between card-design items-center">
@@ -71,8 +95,8 @@ function App() {
               className="flex py-4 bg-slate-500 mr-2"
             />
             <NameDialog
-              setOpen={setShowDialog}
-              open={showDialog}
+              setOpen={setShowNameDialog}
+              open={showNameDialog}
               setName={setName}
               name={name}
             />
@@ -105,24 +129,31 @@ function App() {
           <div className="w-1/4 flex flex-col justify-center space-y-4">
             <div className="h-1/4 flex flex-col items-center justify-center card-design">
               <span className="text-xs text-neutral-300">Studying for:</span>
-              <h1 className="secondary-text text-2xl">{module}</h1>
+              <h1 className="secondary-text text-2xl">
+                {finalResults[round - 1].course}
+              </h1>
               <span className="font-semibold text-neutral-300">
                 Module <span className="underline text-main">{round}</span> out
                 of 5
               </span>
-              <Button className="mt-6">CRASH OUT</Button>
+              <Button
+                className="mt-6"
+                onClick={() => {
+                  handleEndRound();
+                }}
+              >
+                CRASH OUT
+              </Button>
             </div>
             <div className="h-3/4 card-design">
               <h3 className="main-text text-2xl mb-2">Finals Results</h3>
               <ul className="list-decimal list-inside">
                 <ul className="overflow-hidden">
-                  {Object.keys(finalResults).map((course, index) => (
+                  {finalResults.map((course, index) => (
                     <li className="font-bold text-2xl">
                       <span className="text-neutral-600">{index + 1}.</span>{" "}
-                      {course} -{" "}
-                      <span className="secondary-text">
-                        {finalResults[course]}
-                      </span>
+                      {course.course} -{" "}
+                      <span className="secondary-text">{course.grade}</span>
                       <Separator className="bg-main mt-2" />
                     </li>
                   ))}
