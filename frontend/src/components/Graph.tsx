@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 
-const Graph = ({ isPaused, onPause }) => {
+const Graph = () => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
@@ -73,17 +73,16 @@ const Graph = ({ isPaused, onPause }) => {
     clearInterval(intervalIdRef.current);
   };
 
-  useEffect(() => {
-    if (isPaused) {
-      // If paused, stop updates and send the latest value to parent
-      stopGraphUpdates();
-      if (latestValueRef.current) onPause(latestValueRef.current.close);
-    } else {
-      // Resume updates if not paused
-      console.log(seriesRef.current.data);
-      startGraphUpdates(seriesRef.current, seriesRef.current.data);
-    }
-  }, [isPaused]);
+//   useEffect(() => {
+//     if (isPaused) {
+//       // If paused, stop updates and send the latest value to parent
+//       stopGraphUpdates();
+//       if (latestValueRef.current) onPause(latestValueRef.current.close);
+//     } else {
+//       // Resume updates if not paused
+//       startGraphUpdates(seriesRef.current, seriesRef.current.data);
+//     }
+//   }, [isPaused])
 
   // Helper function to generate initial data
   const generateInitialData = () => {
