@@ -88,7 +88,6 @@ function App() {
 
   const handleEndRound = () => {
     const finalResultsCopy = [...finalResults];
-    console.log("Received Graph Value " + finalResultsCopy);
     const grade = calculateGrade(); // Determine grade based on latest value
     finalResultsCopy[round - 1].grade = grade;
     setFinalResults(finalResultsCopy);

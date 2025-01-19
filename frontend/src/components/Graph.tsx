@@ -34,6 +34,25 @@ const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
         timeVisible: true,
         secondsVisible: false,
         borderColor: "#2c2c2c", // Match grid colors
+        tickMarkFormatter: (time) => {
+          const date = new Date(time * 1000);
+          return date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        },
+      },
+      localization: {
+        timeFormatter: (time) => {
+          const date = new Date(time * 1000);
+          return date.toLocaleString([], {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        },
       },
       rightPriceScale: {
         borderColor: "#2c2c2c", // Match grid colors
@@ -85,7 +104,7 @@ const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
         // Update finals score and hours studied
         setFinalsScore(variation.close);
         setHoursStudied(
-          Math.min(24, Number((nextIndex / 2 + subStepIndex / 60).toFixed(2))),
+          Math.min(24, Number((nextIndex / 4 + subStepIndex / 60).toFixed(2))),
         ); // Faster scaling
 
         // // Notify the parent of the latest value
@@ -118,12 +137,13 @@ const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
   const generateInitialData = () => {
     const data = [];
     const startTime = Math.floor(Date.now() / 1000); // Start from the current time
+    console.log("startTime: " + new Date(startTime * 1000));
     let value = 60; // Start with a midpoint value within the new range
 
-    const totalCandles = 48; // 48 candles for 24 hours (30-minute intervals)
+    const totalCandles = 96; // 96 candles for 24 hours (15-minute intervals)
 
     for (let i = 0; i < totalCandles; i++) {
-      const time = startTime + i * 30 * 60; // 30-minute intervals
+      const time = startTime + i * 15 * 60; // 15-minute intervals
 
       // High and low are now dependent on open and close values
       const open = value; // The open of the next candle is the close of the previous one

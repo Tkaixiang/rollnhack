@@ -36,14 +36,17 @@ function NameDialog({ setOpen, open, setName, name }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Welcome to CRASH OUT!</DialogTitle>
+          <DialogTitle>
+            Welcome to <span className="main-text">CRASH OUT!</span>
+          </DialogTitle>
         </DialogHeader>
         <div className="mb-4">
           <p className="text-neutral-600">
             Balance your study hours wisely to excel in your modules. While
             studying more improves performance, overworking can lead to
-            burnout—'CRASH OUT.' Strive for top grades by managing effort and
-            rest effectively!
+            burnout—'<span className="main-text">CRASH OUT</span>.' <br />{" "}
+            <br />
+            Strive for top grades by managing effort and rest effectively!
           </p>
           <h3 className="text-lg font-semibold mt-3">Grading Table</h3>
           <ul className="text-neutral-600">
