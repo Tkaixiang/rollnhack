@@ -3,7 +3,7 @@ import "./App.css";
 import NameDialog from "./components/NameDialog";
 import { Button } from "./components/ui/button";
 import RetroGrid from "./components/ui/retro-grid";
-import Graph from "./components/Graph";
+import Graph, { calculateGrade } from "./components/Graph";
 import { Separator } from "./components/ui/separator";
 import { getLeaderboard, postScore } from "./lib/api";
 import ScoreDialog from "./components/ScoreDialog";
@@ -88,7 +88,7 @@ function App() {
 
   const handleEndRound = () => {
     const finalResultsCopy = [...finalResults];
-    const grade = calculateGrade(); // Determine grade based on latest value
+    const grade = calculateGrade(latestGraphValue.current); // Determine grade based on latest value
     finalResultsCopy[round - 1].grade = grade;
     setFinalResults(finalResultsCopy);
     setCurrentShowScore({
@@ -97,21 +97,6 @@ function App() {
     });
     setShowScoreDialog(true);
     setStartLoadingGraph(false); // Stop the graph after ending the round
-  };
-
-  const calculateGrade = () => {
-    const value = latestGraphValue.current;
-    if (value >= 80) return "A+";
-    if (value >= 75) return "A";
-    if (value >= 70) return "A-";
-    if (value >= 65) return "B+";
-    if (value >= 60) return "B";
-    if (value >= 55) return "B-";
-    if (value >= 50) return "C+";
-    if (value >= 45) return "C";
-    if (value >= 40) return "D+";
-    if (value >= 35) return "D";
-    return "F";
   };
 
   const handleSubmitScore = async () => {

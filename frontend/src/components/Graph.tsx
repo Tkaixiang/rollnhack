@@ -1,6 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { createChart } from "lightweight-charts";
 
+export const calculateGrade = (value) => {
+  if (value >= 80) return "A+";
+  if (value >= 75) return "A";
+  if (value >= 70) return "A-";
+  if (value >= 65) return "B+";
+  if (value >= 60) return "B";
+  if (value >= 55) return "B-";
+  if (value >= 50) return "C+";
+  if (value >= 45) return "C";
+  if (value >= 40) return "D+";
+  if (value >= 35) return "D";
+  return "F";
+};
+
 const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
   const chartContainerRef = useRef(null);
   const chartRef = useRef(null);
@@ -137,7 +151,6 @@ const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
   const generateInitialData = () => {
     const data = [];
     const startTime = Math.floor(Date.now() / 1000); // Start from the current time
-    console.log("startTime: " + new Date(startTime * 1000));
     let value = 60; // Start with a midpoint value within the new range
 
     const totalCandles = 96; // 96 candles for 24 hours (15-minute intervals)
@@ -199,7 +212,11 @@ const Graph = ({ latestGraphValue, startLoading, onGraphEnd }) => {
       <div className="absolute top-4 left-4 bg-neutral-800 p-4 rounded shadow-lg text-white z-10">
         <p className="text-lg font-bold">
           Finals Score:{" "}
-          <span className="main-text"> {finalsScore.toFixed(2)} </span>
+          <span className="main-text">
+            {finalsScore.toFixed(2)} (
+            <span className="text-cyan-500">{calculateGrade(finalsScore)}</span>
+            )
+          </span>
         </p>
         <p className="text-lg font-bold">
           Hours of Study: <span className="main-text"> {hoursStudied} </span>
